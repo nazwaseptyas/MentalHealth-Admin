@@ -4,6 +4,7 @@ import Dashboard from './dashboard';
 import Tabelartikel from './tabelartikel';
 import Tabelkonsultasi from './tabelkonsultasi';
 import Login from './login';
+import Tabel from './tabel';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/home" element={<Dashboard />} />
           <Route path="/tabelartikel" element={<Tabelartikel />} />
           <Route path="/tabelkonsultasi" element={<Tabelkonsultasi />} />
+          <Route path="/tabel" element={<Tabel />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -105,11 +105,17 @@ const Layout = ({ children }) => {
             <div id="sidebar-menu">
               {/* Left Menu Start */}
               <ul className="metismenu list-unstyled" id="side-menu">
-                <li className="menu-title">Menu</li>
+                <li className="menu-title">Dashboard</li>
                 <li>
-                  <a href="/">
+                  <a href="/tabelartikel">
                     <i className="uil-home-alt" />
-                    <span>Dashboard</span>
+                    <span>Artikel</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/tabelkonsultasi">
+                    <i className="uil-home-alt" />
+                    <span>Konsultasi</span>
                   </a>
                 </li>
               </ul>

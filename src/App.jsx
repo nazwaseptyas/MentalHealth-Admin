@@ -5,6 +5,7 @@ import Tabelartikel from './tabelartikel';
 import Tabelkonsultasi from './tabelkonsultasi';
 import Login from './login';
 import Tabel from './tabel';
+import Form from './form';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/tabelartikel" element={<Tabelartikel />} />
           <Route path="/tabelkonsultasi" element={<Tabelkonsultasi />} />
           <Route path="/tabel" element={<Tabel />} />
+          <Route path="/form" element={<Form />} />
         </Routes>
       </BrowserRouter>
     </>

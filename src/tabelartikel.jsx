@@ -190,7 +190,7 @@ const TabelArtikel = () => {
             content: {
               maxWidth: '600px', // Set the maximum width of the modal
               margin: '0 auto', // Center the modal horizontally
-              border: '2px solid #4CAF50', // Add a border with green color
+              border: '2px solid #ffffff', // Add a border with green color
               borderRadius: '8px', // Add border radius to make it look better
               background: 'white', // Set the background color to white
               transform: 'translate(0, 10%)', // Move it 50% from the left and 50% from the top

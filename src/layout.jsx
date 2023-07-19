@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 const Layout = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <>
       <div id="layout-wrapper">
@@ -30,7 +36,10 @@ const Layout = ({ children }) => {
               </div>
               <button
                 type="button"
-                className="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn"
+                className={`btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn ${
+                  isSidebarOpen ? 'open' : ''
+                }`}
+                onClick={toggleSidebar}
               >
                 <i className="fa fa-fw fa-bars" />
               </button>
@@ -98,6 +107,7 @@ const Layout = ({ children }) => {
           <button
             type="button"
             className="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn"
+            onClick={toggleSidebar}
           >
             <i className="fa fa-fw fa-bars" />
           </button>

@@ -71,37 +71,25 @@ const Tabelkonsultasi = () => {
       alamat: '456 Oak Avenue',
       keluhan: 'Depression',
     },
-    // Add more data objects as needed
   ]);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedRow, setEditedRow] = useState(null);
 
-  // Function to generate a new ID
-  const generateNewId = () => {
-    const maxId = data.reduce((max, item) => Math.max(max, item.id), 0);
-    return maxId + 1;
-  };
-
-  // Function to handle the edit action
   const handleEdit = (row) => {
     setEditedRow(row);
     setIsEditing(true);
   };
 
-  // Function to handle the delete action
   const handleDelete = (row) => {
     setData((prevData) => prevData.filter((item) => item.id !== row.id));
-    // Setelah menghapus data, kita perlu menyesuaikan kembali nomor ID
-    // agar tetap konsisten dan mengikuti urutan data yang ada
-    setData((prevData) =>
-      prevData.map((item, index) => ({ ...item, id: index + 1 })),
-    );
   };
 
   const handleSave = () => {
     setData((prevData) =>
-      prevData.map((item, index) => ({ ...item, id: index + 1 })),
+      prevData.map((item) =>
+        item.id === editedRow.id ? { ...editedRow } : item,
+      ),
     );
     setIsEditing(false);
     setEditedRow(null);

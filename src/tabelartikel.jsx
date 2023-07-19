@@ -99,7 +99,9 @@ const TabelArtikel = () => {
 
   const handleSave = () => {
     setData((prevData) =>
-      prevData.map((item, index) => ({ ...item, id: index + 1 })),
+      prevData.map((item) =>
+        item.id === editedRow.id ? { ...editedRow } : item,
+      ),
     );
     setIsEditing(false);
     setEditedRow(null);

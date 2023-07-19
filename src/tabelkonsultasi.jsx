@@ -1,8 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from './layout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API } from './variable';
+import Loading from './loading';
 
+function convertTanggal(isoString) {
+  const dateObject = new Date(isoString);
+
+  const year = dateObject.getFullYear();
+  const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so we add 1
+  const date = String(dateObject.getDate()).padStart(2, "0");
+  const hours = String(dateObject.getHours()).padStart(2, "0");
+  const minutes = String(dateObject.getMinutes()).padStart(2, "0");
+  const seconds = String(dateObject.getSeconds()).padStart(2, "0");
+
+  const formattedDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+  return formattedDateTime
+}
 const Tabelkonsultasi = () => {
+
+  const navigate = useNavigate();
+  const [isLoading, setisLoading] = useState(false);
+  let [konsultasi, setkonsultasi] = useState([]);
+  useEffect(() => {
+    const fetchkonsultasi = async () => {
+      try {
+        setisLoading(true);
+        const response = await axios.get(API + '/konsultasi');
+        setkonsultasi(response.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchkonsultasi()
+    setisLoading(false);
+  }, [])
+
+  const filteredData = konsultasi.filter(item => item.nama !== '');
+  // console.log(filteredData);
   return (
     <>
       <Layout>
@@ -14,97 +50,35 @@ const Tabelkonsultasi = () => {
                   <div className="card-body">
                     <div className="row justify-content-between">
                       <div className="">
-                        <h4 className="card-title">Table Edits</h4>
-                        <p className="card-title-desc">
-                          Table Edits is a lightweight jQuery plugin for making
-                          table rows editable.
-                        </p>
+                        <h4 className="card-title">Data Konsultasi</h4>
                       </div>
                     </div>
                     <div className="table-responsive">
                       <table className="table table-editable table-nowrap align-middle table-edits">
                         <thead>
                           <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Edit</th>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Tanggal</th>
+                            <th>Keluhan</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr data-id={1}>
-                            <td data-field="id" style={{ width: 80 }}>
-                              1
-                            </td>
-                            <td data-field="name">David McHenry</td>
-                            <td data-field="age">24</td>
-                            <td data-field="gender">Male</td>
-                            <td style={{ width: 100 }}>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
-                          <tr data-id={2}>
-                            <td data-field="id">2</td>
-                            <td data-field="name">Frank Kirk</td>
-                            <td data-field="age">22</td>
-                            <td data-field="gender">Male</td>
-                            <td>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
-                          <tr data-id={3}>
-                            <td data-field="id">3</td>
-                            <td data-field="name">Rafael Morales</td>
-                            <td data-field="age">26</td>
-                            <td data-field="gender">Male</td>
-                            <td>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
-                          <tr data-id={4}>
-                            <td data-field="id">4</td>
-                            <td data-field="name">Mark Ellison</td>
-                            <td data-field="age">32</td>
-                            <td data-field="gender">Male</td>
-                            <td>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
-                          <tr data-id={5}>
-                            <td data-field="id">5</td>
-                            <td data-field="name">Minnie Walter</td>
-                            <td data-field="age">27</td>
-                            <td data-field="gender">Female</td>
-                            <td>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
+                          {filteredData?.map((val, index) => {
+                            const tanggal = convertTanggal(val.tanggal)
+                            return (<tr data-id={index} key={index}>
+                              <td data-field="id" style={{ width: 80 }}>
+                                {index + 1}
+                              </td>
+                              <td data-field="name">{val.nama}</td>
+                              <td data-field="age">{val.email}</td>
+                              <td data-field="gender">{tanggal}</td>
+                              <td data-field="gender">{val.keluhan}</td>
+
+                            </tr>)
+                          })}
+
                         </tbody>
                       </table>
                     </div>

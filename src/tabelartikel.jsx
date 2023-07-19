@@ -12,18 +12,14 @@ const Tabelartikel = () => {
               <div className="col-12">
                 <div className="card">
                   <div className="card-body">
-                    <div className="row justify-content-between">
-                      <div className="">
-                        <h4 className="card-title">Table Edits</h4>
-                        <p className="card-title-desc">
-                          Table Edits is a lightweight jQuery plugin for making
-                          table rows editable.
-                        </p>
+                    <div className="row justify-content-between mb-5">
+                      <div className="col-8">
+                        <h4 className="card-title">Data Artikel</h4>
                       </div>
-                      <div className="">
+                      <div className="col-2">
                         <Link
                           to="/form"
-                          class="btn btn-primary waves-effect waves-light me-1"
+                          className="btn btn-primary waves-effect waves-light me-1"
                         >
                           Tambah Data
                         </Link>

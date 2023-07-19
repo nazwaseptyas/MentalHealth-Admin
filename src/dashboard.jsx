@@ -1,12 +1,14 @@
 import React from 'react';
 import Layout from './layout';
 import { Link } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 const Dashboard = () => {
   return (
     <>
       <Layout>
         <main>
+          <ToastContainer />
           <div className="page-content">
             <div className="container-fluid">
               {/* start page title */}

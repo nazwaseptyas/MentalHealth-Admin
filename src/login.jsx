@@ -1,11 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from './layout';
+import { Navigate, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import Loading from './loading';
+import { API } from './variable';
 
 const Login = () => {
+
+  const navigate = useNavigate();
+  const [isLoading, setisLoading] = useState(false);
+
+  const [formErrors, setFormErrors] = useState({
+    email: '',
+    password: '',
+  });
+
+  const simpan = async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const formdata = Object.fromEntries(data.entries());
+    // const { errors, isValid } = validateForm(formdata);
+    // if (!isValid) {
+    //   setFormErrors(errors);
+    //   return;
+    // }
+    const { email, password } = formdata;
+
+    try {
+      setisLoading(true);
+      const response = await axios.post(
+        API + '/login',
+        { email, password },
+        {
+          withCredentials: true,
+        },
+      );
+
+      if (response.status === 200) {
+        localStorage.setItem('user', JSON.stringify(response.data));
+        navigate('/home');
+        toast.success('Logout berhasil!', {
+          position: toast.POSITION.TOP_RIGHT, // Atur posisi toast (bisa diganti dengan TOP_LEFT, TOP_CENTER, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT)
+          autoClose: 3000, // Atur waktu otomatis menutup toast (dalam milidetik), misalnya 3000ms = 3 detik
+        });
+      }
+      setisLoading(true);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className="account-pages my-5 pt-sm-5">
         <div className="container">
+          <ToastContainer />
+
           <div className="row"></div>
           <div className="row align-items-center justify-content-center">
             <div className="col-md-8 col-lg-6 col-xl-5">
@@ -15,7 +66,7 @@ const Login = () => {
                     <h5 className="text-primary">Selamat datang !</h5>
                   </div>
                   <div className="p-2 mt-4">
-                    <form>
+                    <form onSubmit={simpan}>
                       <div className="mb-3">
                         <label className="form-label" htmlFor="username">
                           Email
@@ -24,6 +75,7 @@ const Login = () => {
                           type="email"
                           className="form-control"
                           id="username"
+                          name="email"
                           placeholder="Enter username"
                         />
                       </div>
@@ -33,6 +85,7 @@ const Login = () => {
                         </label>
                         <input
                           type="password"
+                          name="password"
                           className="form-control"
                           id="userpassword"
                           placeholder="Enter password"
@@ -44,7 +97,7 @@ const Login = () => {
                           className="btn btn-primary w-sm waves-effect waves-light"
                           type="submit"
                         >
-                          Masuk
+                          {isLoading ? <Loading /> : 'Masuk'}
                         </button>
                       </div>
                     </form>
@@ -53,9 +106,7 @@ const Login = () => {
               </div>
             </div>
           </div>
-          {/* end row */}
         </div>
-        {/* end container */}
       </div>
     </>
   );

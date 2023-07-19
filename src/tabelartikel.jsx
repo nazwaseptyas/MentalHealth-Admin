@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from './layout';
 import DataTable from 'react-data-table-component';
 import Modal from 'react-modal';
@@ -249,6 +249,7 @@ const TabelArtikel = () => {
                   }
                   className="form-control"
                 />
+
                 <label>Isi Artikel:</label>
                 <textarea
                   value={editedRow.isi}

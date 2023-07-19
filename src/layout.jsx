@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
             <div className="d-flex">
               {/* LOGO */}
               <div className="navbar-brand-box">
-                <a href="/" className="logo logo-dark">
+                <Link to="/home" className="logo logo-dark">
                   <span className="logo-sm">
                     <img
                       src="/assets/img/logo/logoyukcerita.png"
@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
                       height={20}
                     />
                   </span>
-                </a>
+                </Link>
               </div>
               <button
                 type="button"
@@ -87,7 +87,7 @@ const Layout = ({ children }) => {
         <div className="vertical-menu">
           {/* LOGO */}
           <div className="navbar-brand-box">
-            <a href="/" className="logo logo-dark">
+            <Link to="/home" className="logo logo-dark">
               <span className="logo-sm">
                 <img
                   src="/assets/img/logo/logoyukcerita.png"
@@ -102,7 +102,7 @@ const Layout = ({ children }) => {
                   height="80px"
                 />
               </span>
-            </a>
+            </Link>
           </div>
           <button
             type="button"
@@ -118,16 +118,16 @@ const Layout = ({ children }) => {
               <ul className="metismenu list-unstyled" id="side-menu">
                 <li className="menu-title">Dashboard</li>
                 <li>
-                  <a href="/tabelartikel">
+                  <Link to="/tabelartikel">
                     <i className="uil-home-alt" />
                     <span>Artikel</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/tabelkonsultasi">
+                  <Link to="/tabelkonsultasi">
                     <i className="uil-home-alt" />
                     <span>Konsultasi</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

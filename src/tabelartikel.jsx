@@ -4,22 +4,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API } from './variable';
 import Modal from './modal';
-import useSWR, { useSWRConfig } from "swr";
+import useSWR, { useSWRConfig } from 'swr';
 import Loading from './loading';
-
 
 function convertTanggal(isoString) {
   const dateObject = new Date(isoString);
 
   const year = dateObject.getFullYear();
-  const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so we add 1
-  const date = String(dateObject.getDate()).padStart(2, "0");
+  const month = String(dateObject.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so we add 1
+  const date = String(dateObject.getDate()).padStart(2, '0');
 
   const formattedDateTime = `${year}-${month}-${date} `;
-  return formattedDateTime
+  return formattedDateTime;
 }
 const Tabelartikel = () => {
-
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(false);
   const [clicked, setclicked] = useState(false);
@@ -31,16 +29,15 @@ const Tabelartikel = () => {
     return response.data;
   };
 
-  const { data } = useSWR("artikel", fetcher);
+  const { data } = useSWR('artikel', fetcher);
   // if (!data) return <div className='d-flex align-items-center justify-content-center'><Loading></Loading></div>;
-
-
   const deleteartikel = async (id) => {
     const response = await axios.delete(API + '/artikel/' + id);
     console.log(response);
-    mutate("artikel");
+    mutate('artikel');
+    modalref.current.click();
   };
-
+  console.log(data);
   // if (clicked) {
   // const deleteartikel = async (id) => {
   //   try {
@@ -77,10 +74,12 @@ const Tabelartikel = () => {
                       </div>
                     </div>
                     <div className="table-responsive">
-                      {!data ?
-                        (<div className='d-flex align-items-center justify-content-center'><Loading></Loading></div>)
-                        :
-                        (<table className="table table-editable table-nowrap align-middle table-edits">
+                      {!data ? (
+                        <div className="d-flex align-items-center justify-content-center">
+                          <Loading></Loading>
+                        </div>
+                      ) : (
+                        <table className="table table-editable table-nowrap align-middle table-edits">
                           <thead>
                             <tr>
                               <th>No</th>
@@ -102,9 +101,8 @@ const Tabelartikel = () => {
                                   <td data-field="age">{val.penulis}</td>
                                   <td data-field="gender">{val.isi_artikel}</td>
                                   <td data-field="gender">{val.tanggal}</td>
-                                  <td style={{ width: 100, gap: "10px" }}>
+                                  <td style={{ width: 100, gap: '10px' }}>
                                     <div className="d-flex gap-2">
-
                                       <Link
                                         to={'/update-artikel/' + val.id}
                                         className="btn btn-success"
@@ -112,19 +110,24 @@ const Tabelartikel = () => {
                                       >
                                         <i className="fas fa-pencil-alt" />
                                       </Link>
-                                      <Modal setclicked={setclicked} hapus={() => deleteartikel(val.id)}>
+                                      {/* <Modal artikelid={val.id}>
                                         <i className="far fa-trash-alt"></i>
-                                      </Modal>
-
+                                      </Modal> */}
+                                      <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                        onClick={() => deleteartikel(val.id)}
+                                      >
+                                        <i className="far fa-trash-alt"></i>
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
-                              )
+                              );
                             })}
-
                           </tbody>
-                        </table>)
-                      }
+                        </table>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -1,18 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate()
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+
+    if (!user) {
+      navigate('/')
+    }
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
+  const logout = () => {
+    localStorage.removeItem('user');
+    // Notify('Logout Berhasil')
+    navigate('/')
+    toast.success('Logout berhasil!', {
+      position: toast.POSITION.TOP_RIGHT, // Atur posisi toast (bisa diganti dengan TOP_LEFT, TOP_CENTER, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT)
+      autoClose: 3000, // Atur waktu otomatis menutup toast (dalam milidetik), misalnya 3000ms = 3 detik
+    });
+  }
   return (
     <>
       <div id="layout-wrapper">
         <header id="page-topbar">
+          <ToastContainer />
+
           <div className="navbar-header">
             <div className="d-flex">
               {/* LOGO */}
@@ -36,9 +56,8 @@ const Layout = ({ children }) => {
               </div>
               <button
                 type="button"
-                className={`btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn ${
-                  isSidebarOpen ? 'open' : ''
-                }`}
+                className={`btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn ${isSidebarOpen ? 'open' : ''
+                  }`}
                 onClick={toggleSidebar}
               >
                 <i className="fa fa-fw fa-bars" />
@@ -65,8 +84,7 @@ const Layout = ({ children }) => {
                   <i className="uil-angle-down d-none d-xl-inline-block font-size-15" />
                 </button>
                 <div className="dropdown-menu dropdown-menu-end">
-                  {/* item*/}
-                  <a className="dropdown-item" href="/logout">
+                  <a className="dropdown-item" onClick={logout}>
                     <i className="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted" />{' '}
                     <span className="align-middle">Keluar</span>
                   </a>

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import Loading from './loading';
 import { API } from './variable';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
 
@@ -20,12 +21,12 @@ const Login = () => {
     e.preventDefault();
     const data = new FormData(e.target);
     const formdata = Object.fromEntries(data.entries());
+    const { email, password } = formdata;
     // const { errors, isValid } = validateForm(formdata);
     // if (!isValid) {
     //   setFormErrors(errors);
     //   return;
     // }
-    const { email, password } = formdata;
 
     try {
       setisLoading(true);

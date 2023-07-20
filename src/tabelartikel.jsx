@@ -1,8 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from './layout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API } from './variable';
+import Modal from './modal';
+import useSWR, { useSWRConfig } from "swr";
+import Loading from './loading';
 
+
+function convertTanggal(isoString) {
+  const dateObject = new Date(isoString);
+
+  const year = dateObject.getFullYear();
+  const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so we add 1
+  const date = String(dateObject.getDate()).padStart(2, "0");
+
+  const formattedDateTime = `${year}-${month}-${date} `;
+  return formattedDateTime
+}
 const Tabelartikel = () => {
+
+  const navigate = useNavigate();
+  const [isLoading, setisLoading] = useState(false);
+  const [clicked, setclicked] = useState(false);
+  let [artikel, setartikel] = useState([]);
+
+  const { mutate } = useSWRConfig();
+  const fetcher = async () => {
+    const response = await axios.get(API + '/artikel');
+    return response.data;
+  };
+
+  const { data } = useSWR("artikel", fetcher);
+  // if (!data) return <div className='d-flex align-items-center justify-content-center'><Loading></Loading></div>;
+
+
+  const deleteartikel = async (id) => {
+    const response = await axios.delete(API + '/artikel/' + id);
+    console.log(response);
+    mutate("artikel");
+  };
+
+  // if (clicked) {
+  // const deleteartikel = async (id) => {
+  //   try {
+  //     setisLoading(true);
+  //     const response = await axios.delete(API + '/artikel/' + id);
+  //     // setartikel(response.data)
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // deleteartikel()
+  // }
+  // console.log(clicked);
   return (
     <>
       <Layout>
@@ -26,91 +77,54 @@ const Tabelartikel = () => {
                       </div>
                     </div>
                     <div className="table-responsive">
-                      <table className="table table-editable table-nowrap align-middle table-edits">
-                        <thead>
-                          <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Edit</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr data-id={1}>
-                            <td data-field="id" style={{ width: 80 }}>
-                              1
-                            </td>
-                            <td data-field="name">David McHenry</td>
-                            <td data-field="age">24</td>
-                            <td data-field="gender">Male</td>
-                            <td style={{ width: 100 }}>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
-                          <tr data-id={2}>
-                            <td data-field="id">2</td>
-                            <td data-field="name">Frank Kirk</td>
-                            <td data-field="age">22</td>
-                            <td data-field="gender">Male</td>
-                            <td>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
-                          <tr data-id={3}>
-                            <td data-field="id">3</td>
-                            <td data-field="name">Rafael Morales</td>
-                            <td data-field="age">26</td>
-                            <td data-field="gender">Male</td>
-                            <td>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
-                          <tr data-id={4}>
-                            <td data-field="id">4</td>
-                            <td data-field="name">Mark Ellison</td>
-                            <td data-field="age">32</td>
-                            <td data-field="gender">Male</td>
-                            <td>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
-                          <tr data-id={5}>
-                            <td data-field="id">5</td>
-                            <td data-field="name">Minnie Walter</td>
-                            <td data-field="age">27</td>
-                            <td data-field="gender">Female</td>
-                            <td>
-                              <a
-                                className="btn btn-outline-secondary btn-sm edit"
-                                title="Edit"
-                              >
-                                <i className="fas fa-pencil-alt" />
-                              </a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      {!data ?
+                        (<div className='d-flex align-items-center justify-content-center'><Loading></Loading></div>)
+                        :
+                        (<table className="table table-editable table-nowrap align-middle table-edits">
+                          <thead>
+                            <tr>
+                              <th>No</th>
+                              <th>Judul Artikel </th>
+                              <th>Penulis</th>
+                              <th>Isi Artikel</th>
+                              <th>Tanggal</th>
+                              <th>Aksi</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {data.map((val, index) => {
+                              return (
+                                <tr data-id={index} key={index}>
+                                  <td data-field="id" style={{ width: 80 }}>
+                                    {index + 1}
+                                  </td>
+                                  <td data-field="name">{val.judul}</td>
+                                  <td data-field="age">{val.penulis}</td>
+                                  <td data-field="gender">{val.isi_artikel}</td>
+                                  <td data-field="gender">{val.tanggal}</td>
+                                  <td style={{ width: 100, gap: "10px" }}>
+                                    <div className="d-flex gap-2">
+
+                                      <Link
+                                        to={'/update-artikel/' + val.id}
+                                        className="btn btn-success"
+                                        title="Edit"
+                                      >
+                                        <i className="fas fa-pencil-alt" />
+                                      </Link>
+                                      <Modal setclicked={setclicked} hapus={() => deleteartikel(val.id)}>
+                                        <i className="far fa-trash-alt"></i>
+                                      </Modal>
+
+                                    </div>
+                                  </td>
+                                </tr>
+                              )
+                            })}
+
+                          </tbody>
+                        </table>)
+                      }
                     </div>
                   </div>
                 </div>

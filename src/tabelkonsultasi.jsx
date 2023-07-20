@@ -37,8 +37,8 @@ const Tabelkonsultasi = () => {
     setisLoading(false);
   }, [])
 
-  const filteredData = konsultasi.filter(item => item.nama !== '');
-  // console.log(filteredData);
+  konsultasi = konsultasi.filter(item => item.nama !== '');
+  console.log(konsultasi);
   return (
     <>
       <Layout>
@@ -62,10 +62,11 @@ const Tabelkonsultasi = () => {
                             <th>Email</th>
                             <th>Tanggal</th>
                             <th>Keluhan</th>
+                            <th>No Telepon</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {filteredData?.map((val, index) => {
+                          {konsultasi?.map((val, index) => {
                             const tanggal = convertTanggal(val.tanggal)
                             return (<tr data-id={index} key={index}>
                               <td data-field="id" style={{ width: 80 }}>
@@ -75,6 +76,7 @@ const Tabelkonsultasi = () => {
                               <td data-field="age">{val.email}</td>
                               <td data-field="gender">{tanggal}</td>
                               <td data-field="gender">{val.keluhan}</td>
+                              <td data-field="gender">{val.nohp}</td>
 
                             </tr>)
                           })}

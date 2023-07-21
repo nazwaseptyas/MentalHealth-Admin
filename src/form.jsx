@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Layout from './layout';
 import { Image } from 'cloudinary-react';
 import { API } from './variable';
@@ -6,16 +6,27 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
+import { Component } from 'react';
+import { Editor } from 'react-draft-wysiwyg';
+import '../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const Form = () => {
   const [isLoading, setisLoading] = useState(false);
+  const [dataEditor, setdataEditor] = useState('');
 
+
+  // console.log(dataEditor.blocks[0].text);
+  const editorRef = useRef(null)
   const simpan = async (e) => {
     e.preventDefault();
+
+    const isi_artikel = dataEditor.blocks[0].text
     const data = new FormData(e.target);
     const formdata = Object.fromEntries(data.entries());
-    const { gambar, judul, penulis, isi_artikel, tanggal } = formdata;
+    const { gambar, judul, penulis, tanggal } = formdata;
     // console.log({ gambar, judul, penulis, isi_artikel, tanggal });
+    // // console.log({ editorRef, formdata });
+    // return
     try {
       setisLoading(true);
       const res = await axios.post(
@@ -99,8 +110,15 @@ const Form = () => {
                           />
                         </div>
                       </div>
-
                       <div className="mb-3">
+                        <label className="form-label">Isi Artikel</label>
+                        <div>
+                          <div name="editor">
+                            <Editor onChange={setdataEditor} />
+                          </div >
+                        </div>
+                      </div>
+                      {/* <div className="mb-3">
                         <label className="form-label">Isi Artikel</label>
                         <div>
                           <textarea
@@ -111,7 +129,7 @@ const Form = () => {
                             defaultValue={''}
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="d-flex justify-content-end">
                         <div style={{ display: 'flex', gap: '5px' }}>
                           <button

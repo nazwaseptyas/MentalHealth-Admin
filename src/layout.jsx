@@ -148,12 +148,12 @@ const Layout = ({ children }) => {
                     <span>Konsultasi</span>
                   </Link>
                 </li>
-                {/* <li>
+                <li>
                   <Link to="/tabel">
                     <i className="uil-home-alt" />
                     <span>Tabel</span>
                   </Link>
-                </li> */}
+                </li>
               </ul>
             </div>
             {/* Sidebar */}

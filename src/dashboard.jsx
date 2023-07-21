@@ -37,9 +37,9 @@ const Dashboard = () => {
                         <p className="text-muted mb-0">Total Artikel</p>
                       </div>
                       <p className="text-muted mt-3 mb-0">
-                        <a href="/tabelartikel" className="text-success me-1">
+                        <Link to="/tabelartikel" className="text-success me-1">
                           Lihat Artikel
-                        </a>
+                        </Link>
                       </p>
                     </div>
                   </div>
@@ -58,12 +58,12 @@ const Dashboard = () => {
                         <p className="text-muted mb-0">Konsultasi</p>
                       </div>
                       <p className="text-muted mt-3 mb-0">
-                        <a
-                          href="/tabelkonsultasi"
+                        <Link
+                          to="/tabelkonsultasi"
                           className="text-success me-1"
                         >
                           Lihat Data Konsultasi
-                        </a>
+                        </Link>
                       </p>
                     </div>
                   </div>

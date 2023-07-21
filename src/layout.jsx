@@ -6,12 +6,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     const user = localStorage.getItem('user');
 
     if (!user) {
-      navigate('/')
+      navigate('/');
     }
   }, []);
 
@@ -21,12 +21,12 @@ const Layout = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('user');
     // Notify('Logout Berhasil')
-    navigate('/')
+    navigate('/');
     toast.success('Logout berhasil!', {
       position: toast.POSITION.TOP_RIGHT, // Atur posisi toast (bisa diganti dengan TOP_LEFT, TOP_CENTER, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT)
       autoClose: 3000, // Atur waktu otomatis menutup toast (dalam milidetik), misalnya 3000ms = 3 detik
     });
-  }
+  };
   return (
     <>
       <div id="layout-wrapper">
@@ -56,8 +56,9 @@ const Layout = ({ children }) => {
               </div>
               <button
                 type="button"
-                className={`btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn ${isSidebarOpen ? 'open' : ''
-                  }`}
+                className={`btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn ${
+                  isSidebarOpen ? 'open' : ''
+                }`}
                 onClick={toggleSidebar}
               >
                 <i className="fa fa-fw fa-bars" />
@@ -147,12 +148,12 @@ const Layout = ({ children }) => {
                     <span>Konsultasi</span>
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/tabel">
                     <i className="uil-home-alt" />
                     <span>Tabel</span>
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
             {/* Sidebar */}
